@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boletim Digital</title>
+  <!-- Arquivo de estilos para deixar a página bonita -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Container principal do boletim -->
+  <main class="container">
+    
+    <!-- Cabeçalho principal com título e turma -->
+    <header class="header">
+      <h1>Boletim Digital</h1>
+      <p class="subtitulo">Estudante Exemplo — 8º Ano</p>
+    </header>
+
+    <!-- Área de Cards de Resumo (preenchida via JavaScript) -->
+    <section class="cards-grid" id="cards-container">
+      <!-- Os cards serão inseridos aqui dinamicamente -->
+    </section>
+
+    <!-- Área da Tabela de Notas -->
+    <section class="tabela-section">
+      <div class="tabela-wrapper">
+        <table class="tabela-boletim">
+          <thead>
+            <tr>
+              <th>Disciplina</th>
+              <th>1º Tri</th>
+              <th>2º Tri</th>
+              <th>3º Tri</th>
+              <th>Média</th>
+              <th>Faltas</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo">
+            <!-- As 15 linhas das disciplinas serão inseridas aqui via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Arquivo JavaScript que fará toda a lógica do boletim -->
+  <script src="script.js"></script>
+</body>
+</html>

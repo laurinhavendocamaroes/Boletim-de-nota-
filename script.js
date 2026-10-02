@@ -1,20 +1,20 @@
-// DADOS BRUTOS DO BOLETIM (Array de Objetos)
+// DADOS BRUTOS DO BOLETIM (Array de Objetos Atualizado)
 const dadosBoletim = [
-  { disciplina: "Língua Portuguesa", tri1: 82, tri2: "7,8", tri3: 85, faltas: [2, 1, 1] },
-  { disciplina: "Matemática", tri1: 52, tri2: "5,8", tri3: null, faltas: [3, 2, 1] },
-  { disciplina: "Ciências", tri1: "8,1", tri2: 76, tri3: 8.0, faltas: [1, 2, 0] },
-  { disciplina: "História", tri1: 7.0, tri2: 84, tri3: null, faltas: [1, 1, 1] },
-  { disciplina: "Geografia", tri1: 68, tri2: 7.3, tri3: "7,9", faltas: [0, 1, 1] },
-  { disciplina: "Língua Inglesa", tri1: 86, tri2: "8,1", tri3: 8.7, faltas: [1, 0, 0] },
-  { disciplina: "Arte", tri1: 9.0, tri2: 92, tri3: null, faltas: [1, 1, 0] },
-  { disciplina: "Educação Física", tri1: 95, tri2: 9.0, tri3: "9,4", faltas: [0, 1, 0] },
-  { disciplina: "Educação Digital", tri1: 88, tri2: 9.1, tri3: 93, faltas: [1, 0, 1] },
-  { disciplina: "Educação Financeira", tri1: 74, tri2: "7,8", tri3: null, faltas: [1, 1, 1] },
-  { disciplina: "Estudo Orientado", tri1: 8.0, tri2: 83, tri3: "8,5", faltas: [0, 1, 0] },
-  { disciplina: "Redação e Leitura", tri1: 62, tri2: "6,8", tri3: null, faltas: [2, 1, 1] },
-  { disciplina: "Pensamento Lógico", tri1: 48, tri2: 5.6, tri3: "6,0", faltas: [2, 2, 1] },
-  { disciplina: "Literatura Arte e Movimento", tri1: "7,7", tri2: 80, tri3: null, faltas: [1, 0, 1] },
-  { disciplina: "Práticas Experimentais", tri1: 58, tri2: "6,2", tri3: 6.4, faltas: [1, 1, 1] }
+  { disciplina: "Língua Portuguesa", tri1: 84.0, tri2: 90.0, tri3: null, faltas: [3, 0, 0] },
+  { disciplina: "Matemática", tri1: 72.0, tri2: 85.0, tri3: null, faltas: [2, 2, 0] },
+  { disciplina: "Ciências", tri1: 88.0, tri2: 80.0, tri3: null, faltas: [1, 0, 0] },
+  { disciplina: "História", tri1: 94.0, tri2: 91.0, tri3: null, faltas: [2, 0, 0] },
+  { disciplina: "Geografia", tri1: 81.0, tri2: 85.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Língua Inglesa", tri1: 77.0, tri2: 69.0, tri3: null, faltas: [1, 2, 0] },
+  { disciplina: "Arte", tri1: 60.0, tri2: 64.0, tri3: null, faltas: [2, 2, 0] },
+  { disciplina: "Educação Física", tri1: 100.0, tri2: 88.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Educação Digital", tri1: 85.0, tri2: 100.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Educação Financeira", tri1: 95.0, tri2: 96.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Estudo Orientado", tri1: 96.0, tri2: 91.0, tri3: null, faltas: [0, 4, 0] },
+  { disciplina: "Redação e Leitura", tri1: 84.0, tri2: 83.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Pensamento Lógico", tri1: 100.0, tri2: 94.0, tri3: null, faltas: [0, 0, 0] },
+  { disciplina: "Literatura Arte e Movimento", tri1: 81.0, tri2: 64.0, tri3: null, faltas: [1, 0, 0] },
+  { disciplina: "Práticas Experimentais", tri1: 74.0, tri2: 91.0, tri3: null, faltas: [0, 0, 0] }
 ];
 
 // FUNÇÃO PARA NORMALIZAR AS NOTAS PARA A ESCALA DE 0 A 10
@@ -121,11 +121,6 @@ function construirBoletim() {
     ? (somaMediasGerais / qtdDisciplinasComMedia).toFixed(1).replace(".", ",") 
     : "—";
 
-  /* 
-    NOTA SOBRE FREQUÊNCIA:
-    O valor abaixo de 92% e o texto "Frequência adequada" são apenas DEMONSTRATIVOS/FICTÍCIOS para esta versão do projeto e não são calculados diretamente das faltas.
-  */
-  
   // Preenche os Cards de Resumo
   containerCards.innerHTML = `
     <div class="card">

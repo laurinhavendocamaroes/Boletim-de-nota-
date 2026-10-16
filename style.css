@@ -11,6 +11,7 @@
   --cor-sucesso: #10b981;        /* Verde para bom desempenho */
   --cor-atencao: #f59e0b;        /* Laranja para atenção */
   --cor-indisponivel: #64748b;   /* Cinza para notas não lançadas */
+  --cor-erro: #ef4444;           /* Vermelho para erros e destaques */
 }
 
 /* Reset básico e tipografia */
@@ -52,114 +53,80 @@ body {
   font-weight: 500;
 }
 
-/* Grid de Cards com sombra suave */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.card {
+/* Área de Acesso (PIN) */
+.card-acesso {
   background-color: var(--cor-card-bg);
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
-  border: 1px solid var(--cor-borda);
-  text-align: center;
-}
-
-.card h3 {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.card .valor {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: var(--cor-principal);
-}
-
-.card .subtexto {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  margin-top: 4px;
-}
-
-/* Tabela e responsividade */
-.tabela-section {
-  background-color: var(--cor-card-bg);
+  padding: 24px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--cor-borda);
-  overflow: hidden;
+  max-width: 400px;
+  margin: 0 auto 30px auto;
+  text-align: center;
 }
 
-.tabela-wrapper {
-  overflow-x: auto; /* Permite rolar pro lado no celular */
-}
-
-.tabela-boletim {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-.tabela-boletim th {
-  background-color: var(--cor-secundaria);
+.card-acesso h2 {
+  font-size: 1.2rem;
   color: var(--cor-texto);
-  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.instrucao-acesso {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+.form-acesso {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.form-acesso input {
+  padding: 10px 14px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 140px;
+  text-align: center;
+  outline: none;
+}
+
+.form-acesso input:focus {
+  border-color: var(--cor-principal);
+}
+
+.form-acesso button, .painel-acoes button {
+  background-color: var(--cor-principal);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
 }
 
-.tabela-boletim td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--cor-borda);
+.form-acesso button:hover, .painel-acoes button:hover {
+  opacity: 0.9;
 }
 
-.tabela-boletim tbody tr:last-child td {
-  border-bottom: none;
+.painel-acoes button.btn-secundario {
+  background-color: #94a3b8;
 }
 
-.tabela-boletim tbody tr:hover {
-  background-color: #f8fafc;
-}
-
-/* Estilos de Situação */
-.tag-situacao {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+.mensagem-status {
+  margin-top: 12px;
+  font-size: 0.9rem;
   font-weight: 600;
+  color: var(--cor-principal);
+  min-height: 20px;
 }
 
-.tag-bom {
-  background-color: #d1fae5;
-  color: var(--cor-sucesso);
+.mensagem-status.erro {
+  color: var(--cor-erro);
 }
 
-.tag-atencao {
-  background-color: #fef3c7;
-  color: var(--cor-atencao);
-}
-
-.tag-indisponivel {
-  background-color: #f1f5f9;
-  color: var(--cor-indisponivel);
-}
-
-/* Ajustes para telas bem pequenas */
-@media (max-width: 600px) {
-  .header h1 {
-    font-size: 1.6rem;
-  }
-  
-  .card .valor {
-    font-size: 1.4rem;
-  }
-}
+/* Painel

@@ -15,35 +15,58 @@
     <!-- Cabeçalho principal com título e turma -->
     <header class="header">
       <h1>Boletim Digital</h1>
-      <p class="subtitulo">Estudante Exemplo — 8º Ano</p>
+      <p class="subtitulo" id="info-estudante">Estudante — 8º Ano (Turma 8A, Nº 19)</p>
     </header>
 
-    <!-- Área de Cards de Resumo (preenchida via JavaScript) -->
-    <section class="cards-grid" id="cards-container">
-      <!-- Os cards serão inseridos aqui dinamicamente -->
+    <!-- Área de Acesso (PIN) -->
+    <section id="area-acesso" class="card-acesso">
+      <h2>Acesso ao Boletim</h2>
+      <p class="instrucao-acesso">Digite seu PIN para visualizar suas notas:</p>
+      <div class="form-acesso">
+        <input type="password" id="campo-pin" placeholder="PIN" maxlength="10">
+        <button id="btn-entrar" onclick="fazerLogin()">Entrar</button>
+      </div>
+      <p id="mensagem-status" class="mensagem-status"></p>
     </section>
 
-    <!-- Área da Tabela de Notas -->
-    <section class="tabela-section">
-      <div class="tabela-wrapper">
-        <table class="tabela-boletim">
-          <thead>
-            <tr>
-              <th>Disciplina</th>
-              <th>1º Tri</th>
-              <th>2º Tri</th>
-              <th>3º Tri</th>
-              <th>Média</th>
-              <th>Faltas</th>
-              <th>Situação</th>
-            </tr>
-          </thead>
-          <tbody id="tabela-corpo">
-            <!-- As 15 linhas das disciplinas serão inseridas aqui via JavaScript -->
-          </tbody>
-        </table>
+    <!-- Conteúdo do Boletim (inicialmente oculto) -->
+    <div id="conteudo-boletim" style="display: none;">
+      
+      <!-- Ações (Editar / Salvar / Cancelar) -->
+      <div class="painel-acoes">
+        <button id="btn-alterar" onclick="abrirEdicao()">Alterar dados</button>
+        <button id="btn-salvar" onclick="salvarAlteracoes()" style="display: none;">Salvar alterações</button>
+        <button id="btn-cancelar" onclick="cancelarEdicao()" style="display: none;" class="btn-secundario">Cancelar</button>
       </div>
-    </section>
+
+      <!-- Área de Cards de Resumo (preenchida via JavaScript) -->
+      <section class="cards-grid" id="cards-container">
+        <!-- Os cards serão inseridos aqui dinamicamente -->
+      </section>
+
+      <!-- Área da Tabela de Notas -->
+      <section class="tabela-section">
+        <div class="tabela-wrapper">
+          <table class="tabela-boletim">
+            <thead>
+              <tr>
+                <th>Disciplina</th>
+                <th>1º Tri</th>
+                <th>2º Tri</th>
+                <th>3º Tri</th>
+                <th>Média</th>
+                <th>Faltas</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-corpo">
+              <!-- As linhas das disciplinas serão inseridas aqui via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
 
   </main>
 

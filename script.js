@@ -268,4 +268,231 @@ function carregarDados(dadosApi) {
 // =====================================================
 
 function renderizarTabela(modoEdicao = false) {
-  const corpo
+  const corpoTabela = document.getElementById("tabela-corpo");
+  corpoTabela.innerHTML = ""; // Limpa a tabela para evitar duplicação
+
+  dadosBoletim.forEach(function (d, index) {
+    const media = calcularMedia([d.tri1, d.tri2, d.tri3]);
+    const totalFaltas = somarFaltas(d.faltas);
+    const situacao = definirSituacao(media);
+
+    const linha = document.createElement("tr");
+
+    if (!modoEdicao) {
+      linha.innerHTML = `
+        <td>${sanitizarTexto(d.disciplina)}</td>
+        <td>${d.tri1 === null ? '<span class="nota-ausente">—</span>' : formatarNota(d.tri1)}</td>
+        <td>${d.tri2 === null ? '<span class="nota-ausente">—</span>' : formatarNota(d.tri2)}</td>
+        <td>${d.tri3 === null ? '<span class="nota-ausente">—</span>' : formatarNota(d.tri3)}</td>
+        <td><strong>${media === null ? '<span class="nota-ausente">Ainda não lançada</span>' : formatarNota(media)}</strong></td>
+        <td>${totalFaltas}</td>
+        <td>${criarEtiquetaSituacao(situacao)}</td>
+      `;
+    } else {
+      const val1 = d.tri1 !== null ? String(d.tri1).replace(".", ",") : "";
+      const val2 = d.tri2 !== null ? String(d.tri2).replace(".", ",") : "";
+      const val3 = d.tri3 !== null ? String(d.tri3).replace(".", ",") : "";
+
+      linha.innerHTML = `
+        <td>${sanitizarTexto(d.disciplina)}</td>
+        <td><input type="text" class="campo-edicao-nota" id="edit-tri1-${index}" value="${val1}"></td>
+        <td><input type="text" class="campo-edicao-nota" id="edit-tri2-${index}" value="${val2}"></td>
+        <td><input type="text" class="campo-edicao-nota" id="edit-tri3-${index}" value="${val3}"></td>
+        <td><strong>${media === null ? '—' : formatarNota(media)}</strong></td>
+        <td>
+          <input type="text" class="campo-edicao-falta" id="edit-f1-${index}" value="${d.faltas[0] || 0}" title="1º Tri">
+          <input type="text" class="campo-edicao-falta" id="edit-f2-${index}" value="${d.faltas[1] || 0}" title="2º Tri">
+          <input type="text" class="campo-edicao-falta" id="edit-f3-${index}" value="${d.faltas[2] || 0}" title="3º Tri">
+        </td>
+        <td>${criarEtiquetaSituacao(situacao)}</td>
+      `;
+    }
+
+    corpoTabela.appendChild(linha);
+  });
+}
+
+function renderizarCards() {
+  const containerCards = document.getElementById("cards-container");
+  containerCards.innerHTML = ""; // Limpa os cards para evitar duplicação
+
+  const disciplinasProcessadas = dadosBoletim.map(function (d) {
+    const media = calcularMedia([d.tri1, d.tri2, d.tri3]);
+    const totalFaltas = somarFaltas(d.faltas);
+    const situacao = definirSituacao(media);
+    return { media, faltas: totalFaltas, situacao };
+  });
+
+  const mediasValidas = disciplinasProcessadas
+    .map(function (d) { return d.media; })
+    .filter(function (m) { return m !== null; });
+
+  let mediaGeral = null;
+  if (mediasValidas.length > 0) {
+    let soma = 0;
+    mediasValidas.forEach(function (m) { soma += m; });
+    mediaGeral = soma / mediasValidas.length;
+  }
+
+  let totalFaltasGeral = 0;
+  disciplinasProcessadas.forEach(function (d) {
+    totalFaltasGeral += d.faltas;
+  });
+
+  const qtdBomDesempenho = disciplinasProcessadas.filter(function (d) {
+    return d.situacao === "Bom desempenho";
+  }).length;
+
+  const qtdAtencao = disciplinasProcessadas.filter(function (d) {
+    return d.situacao === "Atenção";
+  }).length;
+
+  const cards = [
+    {
+      titulo: "Média geral",
+      valor: mediaGeral === null ? "—" : formatarNota(mediaGeral),
+      extra: "Escala de 0 a 10"
+    },
+    {
+      titulo: "Total de faltas",
+      valor: totalFaltasGeral,
+      extra: "Somatório de todos os trimestres"
+    },
+    {
+      titulo: "Bom desempenho",
+      valor: qtdBomDesempenho,
+      extra: "disciplinas com média ≥ 6,0"
+    },
+    {
+      titulo: "Precisam de atenção",
+      valor: qtdAtencao,
+      extra: "disciplinas com média < 6,0"
+    },
+    {
+      titulo: "Frequência",
+      valor: FREQUENCIA_DEMONSTRATIVA + "%",
+      extra: "Frequência adequada"
+    }
+  ];
+
+  cards.forEach(function (c) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <p class="card-titulo">${c.titulo}</p>
+      <p class="card-valor">${c.valor}</p>
+      <p class="card-extra">${c.extra}</p>
+    `;
+    containerCards.appendChild(card);
+  });
+}
+
+// =====================================================
+// 6) EDIÇÃO E SALVAMENTO DE DADOS
+// =====================================================
+
+function abrirEdicao() {
+  document.getElementById("btn-alterar").style.display = "none";
+  document.getElementById("btn-salvar").style.display = "inline-block";
+  document.getElementById("btn-cancelar").style.display = "inline-block";
+  renderizarTabela(true);
+}
+
+function cancelarEdicao() {
+  document.getElementById("btn-alterar").style.display = "inline-block";
+  document.getElementById("btn-salvar").style.display = "none";
+  document.getElementById("btn-cancelar").style.display = "none";
+  renderizarTabela(false);
+}
+
+async function salvarAlteracoes() {
+  let errosEncontrados = false;
+  const novosDados = [];
+
+  // Limpa marcações prévias de erro nos campos
+  document.querySelectorAll(".campo-invalido").forEach(el => el.classList.remove("campo-invalido"));
+
+  dadosBoletim.forEach(function (d, index) {
+    const elT1 = document.getElementById(`edit-tri1-${index}`);
+    const elT2 = document.getElementById(`edit-tri2-${index}`);
+    const elT3 = document.getElementById(`edit-tri3-${index}`);
+
+    const elF1 = document.getElementById(`edit-f1-${index}`);
+    const elF2 = document.getElementById(`edit-f2-${index}`);
+    const elF3 = document.getElementById(`edit-f3-${index}`);
+
+    const vT1 = validarNotaDigitada(elT1.value);
+    const vT2 = validarNotaDigitada(elT2.value);
+    const vT3 = validarNotaDigitada(elT3.value);
+
+    const vF1 = validarFaltaDigitada(elF1.value);
+    const vF2 = validarFaltaDigitada(elF2.value);
+    const vF3 = validarFaltaDigitada(elF3.value);
+
+    if (!vT1.valido) { elT1.classList.add("campo-invalido"); errosEncontrados = true; }
+    if (!vT2.valido) { elT2.classList.add("campo-invalido"); errosEncontrados = true; }
+    if (!vT3.valido) { elT3.classList.add("campo-invalido"); errosEncontrados = true; }
+
+    if (!vF1.valido) { elF1.classList.add("campo-invalido"); errosEncontrados = true; }
+    if (!vF2.valido) { elF2.classList.add("campo-invalido"); errosEncontrados = true; }
+    if (!vF3.valido) { elF3.classList.add("campo-invalido"); errosEncontrados = true; }
+
+    if (!errosEncontrados) {
+      novosDados.push({
+        disciplina: d.disciplina,
+        tri1: vT1.valor,
+        tri2: vT2.valor,
+        tri3: vT3.valor,
+        faltas: [vF1.valor, vF2.valor, vF3.valor]
+      });
+    }
+  });
+
+  if (errosEncontrados) {
+    alert("Existem valores inválidos destacados em vermelho. Por favor, corrija-os antes de salvar.");
+    return;
+  }
+
+  const btnSalvar = document.getElementById("btn-salvar");
+  const textoOriginalBtn = btnSalvar.textContent;
+  btnSalvar.textContent = "Salvando...";
+  btnSalvar.disabled = true;
+
+  try {
+    const resposta = await fetch(`${CONFIG_ALUNO.apiUrl}/api/v1/boletins/salvar`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        turma: CONFIG_ALUNO.turma,
+        numero_chamada: CONFIG_ALUNO.numeroChamada,
+        pin: pinSessao,
+        dados: {
+          disciplinas: novosDados
+        }
+      })
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao salvar alterações no servidor");
+    }
+
+    alert("Dados salvos com sucesso.");
+    
+    // Atualiza estado local
+    dadosBoletim = novosDados;
+
+    // Conclui modo de edição e atualiza interface
+    document.getElementById("btn-alterar").style.display = "inline-block";
+    document.getElementById("btn-salvar").style.display = "none";
+    document.getElementById("btn-cancelar").style.display = "none";
+
+    renderizarTabela(false);
+    renderizarCards();
+
+  } catch (erro) {
+    alert("Não foi possível salvar as alterações. Tente novamente.");
+  } finally {
+    btnSalvar.textContent = textoOriginalBtn;
+    btnSalvar.disabled = false;
+  }
+}

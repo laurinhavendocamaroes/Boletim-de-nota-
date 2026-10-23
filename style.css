@@ -129,4 +129,158 @@ body {
   color: var(--cor-erro);
 }
 
-/* Painel
+/* Painel de Ações do Boletim */
+.painel-acoes {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+/* Grid de Cards com sombra suave */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background-color: var(--cor-card-bg);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+  border: 1px solid var(--cor-borda);
+  text-align: center;
+}
+
+.card h3, .card .card-titulo {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card .valor, .card .card-valor {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--cor-principal);
+}
+
+.card .subtexto, .card .card-extra {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Tabela e responsividade */
+.tabela-section {
+  background-color: var(--cor-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--cor-borda);
+  overflow: hidden;
+}
+
+.tabela-wrapper {
+  overflow-x: auto; /* Permite rolar pro lado no celular */
+}
+
+.tabela-boletim {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.tabela-boletim th {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-texto);
+  padding: 12px 16px;
+  font-weight: 600;
+}
+
+.tabela-boletim td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela-boletim tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabela-boletim tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Campos de edição na tabela */
+.campo-edicao-nota {
+  width: 60px;
+  padding: 4px 6px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.campo-edicao-falta {
+  width: 50px;
+  padding: 4px 6px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.campo-invalido {
+  border-color: var(--cor-erro) !important;
+  background-color: #fef2f2;
+}
+
+/* Estilos de Situação / Etiquetas */
+.tag-situacao, .etiqueta {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tag-bom, .situacao-bom {
+  background-color: #d1fae5;
+  color: var(--cor-sucesso);
+}
+
+.tag-atencao, .situacao-atencao {
+  background-color: #fef3c7;
+  color: var(--cor-atencao);
+}
+
+.tag-indisponivel, .situacao-indisponivel {
+  background-color: #f1f5f9;
+  color: var(--cor-indisponivel);
+}
+
+.nota-ausente {
+  color: #94a3b8;
+}
+
+/* Ajustes para telas bem pequenas */
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .card .valor, .card .card-valor {
+    font-size: 1.4rem;
+  }
+
+  .form-acesso {
+    flex-direction: column;
+  }
+
+  .form-acesso input {
+    width: 100%;
+  }
+}
